@@ -431,7 +431,7 @@ namespace MyDiary.Services.Controllers
                 {
                     foreach (string error in result.Errors)
                     {
-                        ModelState.AddModelError("", error);
+                        ModelState.AddModelError("Errors", error);
                     }
                 }
 

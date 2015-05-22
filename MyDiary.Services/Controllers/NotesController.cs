@@ -16,6 +16,7 @@
     public class NotesController : BaseApiController
     {
         private IUserIdProvider userIdProvider;
+        private ISecurityProvider securityProvider;
 
         public NotesController()
             :this(new MyDiaryData(new MyDiaryDbContext()), new AspNetUserIdProvider())
@@ -28,10 +29,11 @@
             : base(data)
         {
             this.userIdProvider = userIdProvider;
+            this.securityProvider = new SecurityProvider();
         }
 
         [HttpPost]
-        public IHttpActionResult SaveNote(SaveNoteBindingModel info)
+        public IHttpActionResult SaveNote(SaveNoteBindingModel noteModel)
         {
             if (!ModelState.IsValid)
             {
@@ -40,12 +42,21 @@
             }
 
             var currentUserId = this.userIdProvider.GetUserId();
+            var passwordHash = noteModel.Password;
+            var encryptedText = noteModel.NoteText;
+            if(noteModel.Password != null)
+            {
+                passwordHash = this.securityProvider.HashPassword(noteModel.Password);
+                encryptedText = this.securityProvider.EncryptText(noteModel.NoteText, passwordHash);
+            }
+
             var note = new Note()
             {
-                Date = info.Date,
+                Date = noteModel.Date,
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,
-                NoteText = info.NoteText,
+                NoteText = encryptedText,
+                PasswordHash = passwordHash,
                 Type = NoteType.Normal,
                 UserId = currentUserId
             };
@@ -62,6 +73,28 @@
             var currentUserId = this.userIdProvider.GetUserId();
             var notes = this.data.Notes.All().Where(n => (currentUserId == n.UserId) && (EntityFunctions.TruncateTime(n.Date) == date.Date)).Select(NoteViewModel.FromNote);
             return Ok(notes);
+        }
+
+        [HttpPut]
+        public IHttpActionResult UpdateNote(int id, SaveNoteBindingModel noteModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var dfg = BadRequest(ModelState);
+                return BadRequest(ModelState);
+            }
+
+            var note = this.data.Notes.Find(id);
+            if (note == null) 
+            {
+                return BadRequest("No such note!");
+            }
+
+            note.NoteText = noteModel.NoteText;
+
+            this.data.Notes.Update(note);
+            this.data.SaveChanges();
+            return Ok();
         }
 
         [HttpDelete]
@@ -93,6 +126,36 @@
                                        .Select(n => n.Date);
                 
             return Ok(dates);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetDecryptedNoteText([FromUri] int id, string password)
+        {
+            if(id < 0)
+            {
+                return BadRequest("Invalid id!");
+            }
+
+            if (password.Length < 6)
+            {
+                return BadRequest("Password must be at least 6 characters long!");
+            }
+
+            var note = this.data.Notes.Find(id);
+            if(note == null)
+            {
+                return BadRequest("There is no note with id " + id + "!");
+            }
+
+            var hashPassword = this.securityProvider.HashPassword(password);
+            if(hashPassword != note.PasswordHash)
+            {
+                return BadRequest("The password is not correct!");
+            }
+
+            var decryptedText = this.securityProvider.DecryptText(note.NoteText, hashPassword);
+
+            return Ok(decryptedText);
         }
     }
 }

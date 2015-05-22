@@ -15,7 +15,9 @@
                 {
                     Id = n.Id,
                     NoteText = n.NoteText,
-                    Date = n.Date
+                    Date = n.Date,
+                    HasPassword = n.PasswordHash != null,
+                    NoteType = n.Type
                 };
             }
         }
@@ -25,5 +27,9 @@
         public string NoteText { get; set; }
 
         public DateTime Date { get; set; }
+
+        public bool HasPassword { get; set; }
+
+        public NoteType NoteType { get; set; }
     }
 }
