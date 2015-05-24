@@ -21,8 +21,7 @@
         {
             this.Email = StringResources.Email;
             this.Password = StringResources.Password;
-            this.ServerResponseReady = false;
-            this.LoginAsync();
+            this.ServerResponseReady = true;
         }
 
         public ICommand LoginCommand

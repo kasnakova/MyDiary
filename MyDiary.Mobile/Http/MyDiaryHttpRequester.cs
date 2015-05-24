@@ -91,5 +91,12 @@
             var url = Constants.UrlGetDecryptedNoteText + string.Format(Constants.FormatGetDecryptedNoteText, id, password);
             return await httpRequester.SendRequestAsync(url, Method.Get, null, token);
         }
+
+        public async Task<bool> IsConnected()
+        {
+            var httpRequester = new HttpRequester();
+            var result = await httpRequester.SendRequestAsync(Constants.UrlName, Method.Get, null, string.Empty);
+            return !result.Item1;
+        }
     }
 }

@@ -119,7 +119,7 @@ namespace MyDiary.Mobile.ViewModels
                 var isSuccessStatusCode = result.Item2;
                 var pageContent = result.Item3;
                 string message = string.Empty;
-                if (!isSuccessStatusCode)
+                if (!isSuccessStatusCode && !problemWithConnection)
                 {
                     JToken tokenJson = JObject.Parse(pageContent);
                     try

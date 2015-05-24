@@ -16,6 +16,7 @@ using Windows.UI.Popups;
 
 using MyDiary.Mobile.ViewModels;
 using MyDiary.Mobile.Common;
+using MyDiary.Mobile.Http;
 using Windows.Phone.UI.Input;
 using Windows.UI.ViewManagement;
 
@@ -35,13 +36,10 @@ namespace MyDiary.Mobile.Views
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             this.DataContext = new LoginPageViewModel();
             this.ViewModel.ResponseFromServer += HandleServerResponse;
-        //    Loaded += (s, e) =>
-        //    {
-        //        if (this.ViewModel.IsLogged)
-        //        {
-        //            this.Frame.Navigate(typeof(MainPage));
-        //        }
-        //    };
+            Loaded += (s, e) =>
+            {
+                CheckIfLoggedOrOffline();
+            };
         }
 
         public LoginPageViewModel ViewModel
@@ -76,6 +74,28 @@ namespace MyDiary.Mobile.Views
             }
         }
 
+        private async void CheckIfLoggedOrOffline()
+        {
+            if (LocalSettingsManager.Instance.IsOffline())
+            {
+                this.Frame.Navigate(typeof(ReminderPage));
+                return;
+            }
+
+            if(this.ViewModel.IsLogged)
+            {
+                var isConnected = await MyDiaryHttpRequester.Instance.IsConnected();
+                if(isConnected)
+                {
+                    this.Frame.Navigate(typeof(MainPage));
+                }
+                else
+                {
+                    MessageDialogManager.ShowConfirmationDialog(StringResources.TitleNoConnection, StringResources.ContentNoConnection);
+                }
+            }
+        }
+
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(HelpPage));
@@ -98,15 +118,9 @@ namespace MyDiary.Mobile.Views
 
         private void HandleServerResponse(bool problemWithConnection, bool successful, string message)
         {
-            if(LocalSettingsManager.Instance.IsOffline())
-            {
-                this.Frame.Navigate(typeof(MainPage));
-                return;
-            }
-
             if (!problemWithConnection)
             {
-                if (successful || this.ViewModel.IsLogged)
+                if (successful)
                 {
                     this.Frame.Navigate(typeof(MainPage));
                 }
@@ -129,7 +143,7 @@ namespace MyDiary.Mobile.Views
         private void GoOffline(IUICommand command)
         {
             LocalSettingsManager.Instance.SetOfflineMode(true);
-            this.Frame.Navigate(typeof(MainPage));
+            this.Frame.Navigate(typeof(ReminderPage));
         }
     }
 }
