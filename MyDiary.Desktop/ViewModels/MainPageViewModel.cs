@@ -25,7 +25,6 @@
            this.RecordViewModel = new RecordViewModel();
             this.CalendarViewModel = new CalendarViewModel();
             this.RecordViewModel.NoteSaved += this.CalendarViewModel.OnNoteSaved;
-            FileStore.Test();
         }
 
         public string Title

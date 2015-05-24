@@ -66,6 +66,9 @@
     </ApplicationDefinition>
     <Compile Include="Common\FileStore.cs" />
     <Compile Include="Common\Utils.cs" />
+    <Compile Include="ConfirmationBoxWindow.xaml.cs">
+      <DependentUpon>ConfirmationBoxWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BoolToStringColorConverter.cs" />
     <Compile Include="Converters\MultiParameterConverter.cs" />
     <Compile Include="LoginWindow.xaml.cs">
@@ -118,6 +121,10 @@
     <Compile Include="Http\HttpMethod.cs" />
     <Compile Include="Http\HttpRequester.cs" />
     <Compile Include="Http\MyDiaryHttpRequester.cs" />
+    <Page Include="ConfirmationBoxWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -211,12 +218,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\avastui.exe" />
+    <Resource Include="Assets\tick.ico" />
+    <Resource Include="Assets\export_all.png" />
+    <Resource Include="Assets\export.png" />
     <Resource Include="Assets\button_cancel.png" />
     <Resource Include="Assets\button_ok.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -16,6 +16,7 @@ using MyDiary.Desktop.Http;
 using MyDiary.Desktop.Common;
 using MyDiary.Desktop.ViewModels;
 using System.Threading;
+using System.IO;
 
 namespace MyDiary.Desktop
 {
@@ -27,6 +28,7 @@ namespace MyDiary.Desktop
         public MainWindow()
         {
             InitializeComponent();
+            this.isHelpOpen = false;
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             this.DataContext = new MainPageViewModel();
         }
@@ -59,19 +61,19 @@ namespace MyDiary.Desktop
             this.Close();
         }
 
-        private void RemindersButton_Click(object sender, RoutedEventArgs e)
-        {
-           // this.Frame.Navigate(typeof(ReminderPage));
-        }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            //this.Frame.Navigate(typeof(UserDetailsPage));
-        }
-
+        private bool isHelpOpen;
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
-           // this.Frame.Navigate(typeof(HelpPage));
+            if (!isHelpOpen)
+            {
+                this.HelpText.Visibility = Visibility.Visible;
+                this.isHelpOpen = true;
+            }
+            else
+            {
+                this.HelpText.Visibility = Visibility.Hidden;
+                this.isHelpOpen = false;
+            }
         }
 
         private void ListView_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -136,16 +138,37 @@ namespace MyDiary.Desktop
             }
         }
 
-        //private void ListView_Holding(object sender, HoldingRoutedEventArgs e)
-        //{
-        //    FrameworkElement element = (FrameworkElement)e.OriginalSource;
-        //    if (element.DataContext != null && element.DataContext is NoteViewModel && e.HoldingState == Windows.UI.Input.HoldingState.Started)
-        //    {
-        //        NoteViewModel selectedOne = (NoteViewModel)element.DataContext;
-        //        var id = selectedOne.Id;
-        //        this.ViewModel.CalendarViewModel.DeleteNote(id);
-        //        e.Handled = true;
-        //    }
-        //}
+        private void ExportAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "My diary notes - " + this.Calendar.SelectedDate.Value.Date.ToString("dd.MM.yyyy"); // Default file name
+            dlg.DefaultExt = ".docs"; 
+            dlg.Filter = "Word document (.docx)|*.docx|PDF document (.pdf)|*.pdf|Plain text document (.txt)|*.txt|Web page document (.html)|*.html"; // Filter files by extension
+            dlg.ValidateNames = true;
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+                if(this.ViewModel.CalendarViewModel.SaveNotesForDayToFile(filename))
+                {
+                    var msgWin = new ConfirmationBoxWindow("Your notes were successfully saved to file '" + System.IO.Path.GetFileName(filename) + "'", @"/Assets/tick.ico");
+                    msgWin.ShowDialog();
+                }
+                else
+                {
+                    var msgWin = new ConfirmationBoxWindow("Sorry but we couldn't save your notes to file.", @"/Assets/clear.png");
+                    msgWin.ShowDialog();
+                }
+            }
+        }
     }
 }

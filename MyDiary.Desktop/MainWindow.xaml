@@ -9,38 +9,31 @@
             <ImageBrush ImageSource="Assets/background_diary.png"/>
         </Grid.Background>
         <Grid DataContext="{Binding RecordViewModel}" Margin="-18,-107,-0.167,-0.167">
-            <Button Name="SetPasswordButton" ToolTip="Set password" Click="SetPasswordButton_Click" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="82" Height="44">
+            <Button Name="SetPasswordButton" ToolTip="Set password" Click="SetPasswordButton_Click" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top" Width="82" Height="44">
                 <Button.Template>
                     <ControlTemplate>
                         <Image Source="Assets/lock.png" />
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button ToolTip="Make reminder" Name="MakeReminderButton" Command="{Binding SpeechRecognitionCommand}" HorizontalAlignment="Left" Margin="53,120,0,0" VerticalAlignment="Top" Height="41" Width="108">
-                <Button.Template>
-                    <ControlTemplate>
-                        <Image Source="Assets/alarm.png" Margin="0,0,-2,-2.2" />
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-            <Button ToolTip="Save" Command="{Binding SaveNoteCommand}" HorizontalAlignment="Left" Margin="241,123,0,0" VerticalAlignment="Top" Height="41" Width="90">
+            <Button ToolTip="Save" Command="{Binding SaveNoteCommand}" HorizontalAlignment="Left" Margin="237,111,0,0" VerticalAlignment="Top" Height="41" Width="90">
                 <Button.Template>
                     <ControlTemplate>
                         <Image Source="Assets/save.png" />
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <TextBox Name="TextBoxNoteText" HorizontalAlignment="Left" Margin="28,169,0,0" TextWrapping="Wrap" Text="{Binding NoteText, Mode=TwoWay}" VerticalAlignment="Top" Height="179" Width="285"/>
-            <Button ToolTip="Clear" Name="ClearButton" Click="ClearButton_Click" HorizontalAlignment="Left" Margin="247,329,0,0" VerticalAlignment="Top" Height="19" Width="66">
+            <TextBox Name="TextBoxNoteText" HorizontalAlignment="Left" Margin="28,157,0,0" TextWrapping="Wrap" Text="{Binding NoteText, Mode=TwoWay}" VerticalAlignment="Top" Height="179" Width="285"/>
+            <Button ToolTip="Clear" Name="ClearButton" Click="ClearButton_Click" HorizontalAlignment="Left" Margin="247,317,0,0" VerticalAlignment="Top" Height="19" Width="66">
                 <Button.Template>
                     <ControlTemplate>
                         <Image Source="Assets/clear.png" Margin="27,-17,-0.4,0.2" />
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <TextBlock Foreground="White" Text="{Binding SelectedDate, ElementName=Calendar}" HorizontalAlignment="Left" Margin="28,362,0,0" TextWrapping="Wrap" FontSize="25" VerticalAlignment="Top" Height="28" Width="139"/>
+            <TextBlock Foreground="White" Text="{Binding SelectedDate, ElementName=Calendar}" HorizontalAlignment="Left" Margin="28,365,0,0" TextWrapping="Wrap" FontSize="25" VerticalAlignment="Top" Height="28" Width="139"/>
             <!--<Grid DataContext="{Binding SetPasswordViewModel}" Tag="PleaseWork">-->
-            <TextBlock TextAlignment="Left" Name="RecordInfoText" Foreground="{Binding IsSuccessful, Converter={StaticResource BoolToStringColorConverter}}" FontSize="13" HorizontalAlignment="Left" Margin="101,545,0,-0.433" TextWrapping="Wrap" VerticalAlignment="Top" Width="212" Height="33"><Run Text="{Binding InfoText}"/></TextBlock>
+            <TextBlock TextAlignment="Left" Name="RecordInfoText" Foreground="{Binding IsSuccessful, Converter={StaticResource BoolToStringColorConverter}}" FontSize="13" HorizontalAlignment="Left" Margin="28,336,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="285" Height="38"><Run Text="{Binding InfoText}"/></TextBlock>
 
         </Grid>
         <Grid DataContext="{Binding CalendarViewModel}" Margin="0,0,-0.4,0.4">
@@ -62,19 +55,28 @@
                 <!--</i:Interaction.Behaviors>-->
             </ListView>
             <TextBlock TextAlignment="Left" Name="InfoText" Foreground="Red" FontSize="13" HorizontalAlignment="Left" Margin="404,406,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="212" Height="56"><Run Text="{Binding InfoText}"/></TextBlock>
+            <Button ToolTip="Export notes to file" Name="ExportButton" Click="ExportButton_Click" HorizontalAlignment="Left" Margin="-18,411,0,0" VerticalAlignment="Top" Height="49" Width="109">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/export.png" Margin="0,0,-2,-2.2" />
+                    </ControlTemplate>
+                </Button.Template>
+                <TextBlock Height="100" TextWrapping="Wrap" Text="TextBlock" Width="100"/>
+            </Button>
         </Grid>
 
-        <Button ToolTip="Logout" Name="LoginButton" Click="LoginButton_Click" Content="Button" HorizontalAlignment="Left" Margin="609,411,0,0" VerticalAlignment="Top" Width="75">
+        <TextBlock Name="HelpText" Visibility="Hidden" FontSize="12" Foreground="White" HorizontalAlignment="Left" Margin="10,286,0,0" TextWrapping="Wrap" Text="Write your note in the textbox above then if you wish to encrypt your note with  password click on the lock icon. To save your note click on the save icon. Click on a date to view your notes. If a note has a password click to unlock it. If you want to delete a note right click it. If you want to save your notes for the selected date to a local file in your computer click on the icon below." VerticalAlignment="Top" Width="296" Height="130"/>
+        <Button ToolTip="Help" Name="HelpButton" Click="HelpButton_Click" Content="Button" HorizontalAlignment="Left" Margin="245,401,0,0" VerticalAlignment="Top" Width="61" Height="59" RenderTransformOrigin="0.525,0.305">
             <Button.Template>
                 <ControlTemplate>
-                    <Image Source="Assets/logout.png" />
+                    <Image Source="Assets/help.png" />
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        <Button ToolTip="Reminders" Name="RemindersButton" Click="RemindersButton_Click" HorizontalAlignment="Left" Margin="-18,411,0,0" VerticalAlignment="Top" Height="49" Width="109">
+        <Button ToolTip="Logout" Name="LoginButton" Click="LoginButton_Click" Content="Button" HorizontalAlignment="Left" Margin="609,411,0,-0.6" VerticalAlignment="Top" Width="75">
             <Button.Template>
                 <ControlTemplate>
-                    <Image Source="Assets/alarm.png" Margin="0,0,-2,-2.2" />
+                    <Image Source="Assets/logout.png" />
                 </ControlTemplate>
             </Button.Template>
         </Button>

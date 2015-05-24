@@ -296,6 +296,7 @@ namespace MyDiary.Desktop.ViewModels
                     {
                         this.HasNotes = false;
                     }
+
                 }
                 else
                 {
@@ -306,6 +307,14 @@ namespace MyDiary.Desktop.ViewModels
             {
                 this.InfoText = StringResources.ContentNoConnection;
             }
+        }
+
+        public bool SaveNotesForDayToFile(string filePath)
+        {
+            Utils.AppWait();
+            var success = FileStore.SaveNotesForDay(this.Notes.ToList(), this.SelectedDate, filePath);
+            Utils.AppResume();
+            return success;
         }
     }
 }
