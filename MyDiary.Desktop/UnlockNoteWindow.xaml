@@ -1,0 +1,24 @@
+﻿<Window x:Class="MyDiary.Desktop.UnlockNoteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        ResizeMode="NoResize" Title="Type password" Icon="Assets/diary_44px.png" Height="186.758" Width="385.714">
+    <Grid Background="#AEFE4F">
+        <Image Source="Assets/unlock.png" HorizontalAlignment="Left" Height="100" Margin="0,10,0,0" VerticalAlignment="Top" Width="100"/>
+        <Button IsCancel="True" Name="CancelButton" Click="CloseDialog" HorizontalAlignment="Left" Margin="105,117,0,0" VerticalAlignment="Top" Width="75">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="Assets/button_cancel.png" Margin="1,-14,-23.4,-0.4" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button IsDefault="True" Name="ConfirmButton" Click="ConfirmButton_Click" Command="{Binding UnlockNoteCommand}" CommandParameter="{Binding ElementName=TextBoxPassword}"  HorizontalAlignment="Left" Margin="247,117,0,0" VerticalAlignment="Top" Width="75">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="Assets/button_ok.png" Margin="1,-14,-23.4,-0.4" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <PasswordBox Name="TextBoxPassword" FontSize="25" HorizontalAlignment="Left" Height="36" Margin="129,25,0,0" VerticalAlignment="Top" Width="211"/>
+        <TextBlock Name="ErrorMessage" Visibility="Hidden" FontSize="15" Foreground="Red" HorizontalAlignment="Left" Margin="129,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="The password can't be empty!"/></TextBlock>
+    </Grid>
+</Window>

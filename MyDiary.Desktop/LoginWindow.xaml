@@ -1,0 +1,40 @@
+﻿<Window x:Class="MyDiary.Desktop.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       ResizeMode="CanMinimize"
+       
+        Title="Login" Icon="Assets/diary_44px.png" Height="610.746" Width="415.821">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Assets/background_diary_cover.png"/>
+        </Grid.Background>
+        <!--<ProgressBar x:Name="LoadingBar" Visibility="{Binding ServerResponseReady, Converter={StaticResource BoolToVis}}" IsEnabled="False" IsIndeterminate="true" Height="4" HorizontalAlignment="Stretch"/>-->
+        <TextBlock Foreground="White" HorizontalAlignment="Left" Margin="58,43,0,0" TextWrapping="Wrap" FontSize="80" VerticalAlignment="Top" Height="147" Width="316" RenderTransformOrigin="0.611,0.557"><Run Text="My Diary"/><InlineUIContainer>
+        		<PasswordBox Height="40" Width="0"/>
+        	</InlineUIContainer></TextBlock>
+        <TextBox FontSize="25" Name="TextBoxEmail" GotFocus="TextBoxEmail_GotFocus" HorizontalAlignment="Left" Margin="84,219,0,0" TextWrapping="Wrap" Text="{Binding Email, Mode=TwoWay}" VerticalAlignment="Top" Width="267" Height="40"/>
+        <PasswordBox FontSize="25" Password="elizaveta" GotFocus="TextBoxPassword_GotFocus" Name="TextBoxPassword" HorizontalAlignment="Left" Margin="83,289,0,0" VerticalAlignment="Top" Width="267" Height="42"/>
+        <Button Name="LoginButton" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=TextBoxPassword}" Content="Login" HorizontalAlignment="Left" Margin="84,382,0,0" VerticalAlignment="Top" Width="266" Height="40">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="Assets/login_button.png" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button Name="RegisterButton" Click="RegisterButton_Click" Content="Register" HorizontalAlignment="Left" Margin="294,529,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.166,0.172" Height="42" Width="80">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="Assets/register_button.png" Margin="1,-14,-23.4,-0.4" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button ToolTip="Go offline" Name="OfflineButton" Click="OfflineButton_Click" HorizontalAlignment="Left" Margin="10,516,0,0" VerticalAlignment="Top" Height="55" Width="93">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="Assets/offline.png" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <TextBlock Name="InfoText" TextAlignment="Center" Foreground="Red" FontSize="15" HorizontalAlignment="Left" Margin="32,336,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="368" Height="41"><Run Text="{Binding InfoText}"/></TextBlock>
+    </Grid>
+</Window>

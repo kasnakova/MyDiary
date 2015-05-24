@@ -1,0 +1,82 @@
+﻿<Window x:Class="MyDiary.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System"
+      ResizeMode="CanMinimize"
+        Title="{Binding Title}" Icon="Assets/diary_44px.png" Height="500" Width="700">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Assets/background_diary.png"/>
+        </Grid.Background>
+        <Grid DataContext="{Binding RecordViewModel}" Margin="-18,-107,-0.167,-0.167">
+            <Button Name="SetPasswordButton" ToolTip="Set password" Click="SetPasswordButton_Click" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="82" Height="44">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/lock.png" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button ToolTip="Make reminder" Name="MakeReminderButton" Command="{Binding SpeechRecognitionCommand}" HorizontalAlignment="Left" Margin="53,120,0,0" VerticalAlignment="Top" Height="41" Width="108">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/alarm.png" Margin="0,0,-2,-2.2" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button ToolTip="Save" Command="{Binding SaveNoteCommand}" HorizontalAlignment="Left" Margin="241,123,0,0" VerticalAlignment="Top" Height="41" Width="90">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/save.png" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <TextBox Name="TextBoxNoteText" HorizontalAlignment="Left" Margin="28,169,0,0" TextWrapping="Wrap" Text="{Binding NoteText, Mode=TwoWay}" VerticalAlignment="Top" Height="179" Width="285"/>
+            <Button ToolTip="Clear" Name="ClearButton" Click="ClearButton_Click" HorizontalAlignment="Left" Margin="247,329,0,0" VerticalAlignment="Top" Height="19" Width="66">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Assets/clear.png" Margin="27,-17,-0.4,0.2" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <TextBlock Foreground="White" Text="{Binding SelectedDate, ElementName=Calendar}" HorizontalAlignment="Left" Margin="28,362,0,0" TextWrapping="Wrap" FontSize="25" VerticalAlignment="Top" Height="28" Width="139"/>
+            <!--<Grid DataContext="{Binding SetPasswordViewModel}" Tag="PleaseWork">-->
+            <TextBlock TextAlignment="Left" Name="RecordInfoText" Foreground="{Binding IsSuccessful, Converter={StaticResource BoolToStringColorConverter}}" FontSize="13" HorizontalAlignment="Left" Margin="101,545,0,-0.433" TextWrapping="Wrap" VerticalAlignment="Top" Width="212" Height="33"><Run Text="{Binding InfoText}"/></TextBlock>
+
+        </Grid>
+        <Grid DataContext="{Binding CalendarViewModel}" Margin="0,0,-0.4,0.4">
+            <Calendar Name="Calendar" Loaded="Calendar_Loaded" SelectedDatesChanged="Calendar_SelectedDatesChanged" Language="English" HorizontalAlignment="Left" Margin="404,10,0,0" VerticalAlignment="Top" Width="272">
+            </Calendar>
+            <TextBlock Panel.ZIndex="2" FontSize="25" Visibility="{Binding HasNotes, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" TextWrapping="Wrap" Text="No notes for this day" VerticalAlignment="Top" Width="257" Margin="419,181,0,0"/>
+            <ListView MouseLeftButtonUp="ListView_MouseLeftButtonUp" MouseRightButtonUp="ListView_MouseRightButtonDown" Panel.ZIndex="1" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsSource="{Binding Notes}" Name="ListView" MouseRightButtonDown="ListView_MouseRightButtonDown" Margin="404,181,9.6,54.4">
+                <!--<ListView.View>
+                    <local:ImageView />
+                </ListView.View>-->
+                <ListView.Background>
+                    <ImageBrush ImageSource="Assets/note.png"/>
+                </ListView.Background>
+
+                <!--<i:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="SelectionChanged">
+                        <core:InvokeCommandAction Command="{Binding UnlockNoteCommand}" CommandParameter="{Binding SelectedItem, ElementName=ListView}"/>
+                    </core:EventTriggerBehavior>-->
+                <!--</i:Interaction.Behaviors>-->
+            </ListView>
+            <TextBlock TextAlignment="Left" Name="InfoText" Foreground="Red" FontSize="13" HorizontalAlignment="Left" Margin="404,406,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="212" Height="56"><Run Text="{Binding InfoText}"/></TextBlock>
+        </Grid>
+
+        <Button ToolTip="Logout" Name="LoginButton" Click="LoginButton_Click" Content="Button" HorizontalAlignment="Left" Margin="609,411,0,0" VerticalAlignment="Top" Width="75">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="Assets/logout.png" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button ToolTip="Reminders" Name="RemindersButton" Click="RemindersButton_Click" HorizontalAlignment="Left" Margin="-18,411,0,0" VerticalAlignment="Top" Height="49" Width="109">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="Assets/alarm.png" Margin="0,0,-2,-2.2" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Window>
